@@ -1,5 +1,12 @@
+/**
+ * make the nav (or any element) to be fixed on top
+ * author: Bill.Zhao
+ * repository: https://github.com/buildAll/fix-nav.js/blob/master/fix-nav.js
+ * license: MIT
+ */
+
 (function($) {
-    jQuery.fn.fixNav = function( options ) {
+    $.fn.fixNav = function( options ) {
 
         var defaults = {
         };
