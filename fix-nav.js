@@ -6,12 +6,14 @@
  */
 
 (function($) {
-    $.fn.fixNav = function( options ) {
+    $.fn.fixNav = function(options) {
 
         var defaults = {
+            autoRollTop: false,  // make the content below the fixed el roll to top when the el is clicked
+            zIndex: 999          // the z-index when the element is fixed
         };
 
-        var settings = $.extend( {}, defaults, options );
+        var settings = $.extend({}, defaults, options || {});
 
         var scrollDirection = {
             direction: '',
@@ -34,6 +36,18 @@
             }
         };
 
+        var utils = {
+            rollTo: function(el, toWhere) {
+                $(el).click(function() {
+                    if ($(this).css('position') === 'fixed') {
+                        $('body').animate({
+                            scrollTop: toWhere
+                        }, 100);
+                    }
+                });
+            }
+        }
+
         var styleCtrl = {
             isSet: false,
             preStyle: '',
@@ -47,11 +61,16 @@
                     this.preTop = originTop;
 
                     this.$el.css({
-                        'position': 'fixed',
-                        'top': 0,
+                        position: 'fixed',
+                        top: 0,
+                        'z-index': settings.zIndex
                     });
 
                     this.isSet = true;
+
+                    if (settings.autoRollTop) {
+                        utils.rollTo(this.$el.get(0), originTop);
+                    }
                 }
             },
             clearFix: function() {
@@ -73,14 +92,12 @@
         };
 
         return this.each(function(index, el) {
-            var viewportOffset = el.getBoundingClientRect();
-            var originPoistion = viewportOffset.top;
+            var originPoistion = $(el).offset().top;
 
             $(window).scroll(function() {
-                var viewportOffset = el.getBoundingClientRect();
-                var elementTop = viewportOffset.top;
+                var elementTop = originPoistion - $(window).scrollTop();
 
-                if (scrollDirection.isDown() && elementTop <= 0 ) {
+                if (scrollDirection.isDown() && elementTop <= 0) {
                     styleCtrl.setFix(el, originPoistion);
                 } else {
                     styleCtrl.clearFix();
