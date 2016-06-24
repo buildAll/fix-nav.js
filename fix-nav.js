@@ -9,7 +9,7 @@
     $.fn.fixNav = function(options) {
 
         var defaults = {
-            autoRollTop: false,  // make the content below the fixed el roll to top when the el is clicked
+            autoRollTop: false,   // make the content below the fixed el roll to top when the el is clicked
             zIndex: 999,          // the z-index when the element is fixed
             fullWidth: false      // set the nav width to 100%. it can be used for flexbox
         };
@@ -55,6 +55,7 @@
             preTop: null,
             $el: null,
             setFix: function(el, originTop) {
+                var that = this;
                 if (!this.isSet) {
                     this.$el = $(el);
 
@@ -75,6 +76,9 @@
 
                     if (settings.autoRollTop) {
                         utils.rollTo(this.$el.get(0), originTop);
+                        this.$el.click(function() {
+                            that.resetStyle();
+                        });
                     }
                 }
             },
@@ -85,14 +89,17 @@
                     windowTop = $(window).scrollTop();
 
                     if (windowTop <= this.preTop) {
-                        if (this.preStyle) {
-                            this.$el.attr('style', this.preStyle);
-                        } else {
-                            this.$el.removeAttr('style');
-                        }
-                        this.isSet = false;
+                        this.resetStyle();
                     }
                 }
+            },
+            resetStyle: function() {
+                if (this.preStyle) {
+                    this.$el.attr('style', this.preStyle);
+                } else {
+                    this.$el.removeAttr('style');
+                }
+                this.isSet = false;
             }
         };
 
@@ -102,7 +109,7 @@
             $(window).scroll(function() {
                 var elementTop = originPoistion - $(window).scrollTop();
 
-                if (scrollDirection.isDown() && elementTop <= 0) {
+                if (scrollDirection.isDown() && elementTop <= -5) {
                     styleCtrl.setFix(el, originPoistion);
                 } else {
                     styleCtrl.clearFix();
