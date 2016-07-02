@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            height: 5000px;
+            background: red;
+        }
+
+        div {
+            width: 100%;
+            height: 50px;
+            background: yellow;
+            position: relative;
+            top: 500px;
+        }
+
+        p {
+            background: black;
+            height: 1000px;
+        }
+    </style>
+</head>
+<body>
+   <div style="background:blue"></div>
+   <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+   <script src="./fix-nav.js"></script>
+   <script>
+        $('div').fixNav();
+
+        var newP = '<p>oye</p>'
+
+        setInterval(function() {
+            $('body').append(newP);
+        }, 1000);
+   </script>
+</body>
+</html>

@@ -11,6 +11,7 @@
         var defaults = {
             autoRollTop: false,   // make the content below the fixed el roll to top when the el is clicked
             zIndex: 999,          // the z-index when the element is fixed
+            maxWidth: false,         // the max-width of the fixed element
             fullWidth: false      // set the nav width to 100%. it can be used for flexbox
         };
 
@@ -72,6 +73,10 @@
 
                     if (settings.fullWidth) {
                         this.$el.css('width', '100%');
+                    }
+
+                    if (settings.maxWidth) {
+                        this.$el.css('maxWidth', settings.maxWidth + 'px');
                     }
 
                     if (settings.autoRollTop) {
