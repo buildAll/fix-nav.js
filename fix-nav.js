@@ -11,7 +11,7 @@
         var defaults = {
             autoRollTop: false,   // make the content below the fixed el roll to top when the el is clicked
             zIndex: 999,          // the z-index when the element is fixed
-            maxWidth: false,         // the max-width of the fixed element
+            maxWidth: false,      // the max-width of the fixed element
             fullWidth: false      // set the nav width to 100%. it can be used for flexbox
         };
 
@@ -111,7 +111,7 @@
         return this.each(function(index, el) {
             var originPoistion = $(el).offset().top;
 
-            $(window).scroll(function() {
+            function scrollHandler() {
                 var elementTop = originPoistion - $(window).scrollTop();
 
                 if (scrollDirection.isDown() && elementTop <= -5) {
@@ -119,6 +119,15 @@
                 } else {
                     styleCtrl.clearFix();
                 }
+            }
+
+            $(window).scroll(function() {
+                if (typeof window.requsetAnimationFrame === 'function') {
+                    requsetAnimationFrame(scrollHandler);
+                } else {
+                    scrollHandler();
+                }
+
             });
         });
 
